@@ -35,11 +35,11 @@ public class ABTest<T> {
 
         }
 
-        public Builder<T> withName(String s) {
+        public <T> Builder<T> withName(String s) {
             return null;
         }
 
-        public Builder<T> addPattern(ABPattern<T> abPattern) {
+        public <T> Builder<T> addPattern(ABPattern<T> abPattern) {
             return null;
         }
 
