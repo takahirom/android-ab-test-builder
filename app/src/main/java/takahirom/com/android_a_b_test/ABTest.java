@@ -23,11 +23,11 @@ public class ABTest<T> {
     public void visit(VisitDispatcher<T> visitDispatcher) {
     }
 
-    public void convert(OnConvertionListener onConvertionListener) {
+    public void convert(ConvertDispatcher convertDispatcher) {
     }
 
-    public static ABTest getBuiltInstance(Context context, String buttonColor) {
-        return null;
+    public static <T> ABTest<T> getBuiltInstance(Context context, String name) {
+        return new ABTest<>();
     }
 
     public static class Builder<T> {

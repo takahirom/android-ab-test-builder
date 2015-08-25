@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 if (pattern.isMatchPattern(ButtonColorPattern.RED)) {
                     button.setBackgroundColor(Color.RED);
                     // sendLog("visit red")
-                } else if (pattern.equals(ButtonColorPattern.GREEN)) {
+                } else if (pattern.isMatchPattern(ButtonColorPattern.GREEN)) {
                     button.setBackgroundColor(Color.GREEN);
                     // sendLog("visit green")
                 }
@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "clicked!", Toast.LENGTH_SHORT).show();
                 // If ABTest already built,ABTest instance can created by name.
-                ABTest.getBuiltInstance(MainActivity.this, BUTTON_COLOR).convert(new OnConvertionListener() {
+                ABTest.getBuiltInstance(MainActivity.this, BUTTON_COLOR).convert(new ConvertDispatcher<ButtonColorPattern>() {
                     @Override
-                    public void onConvert(ABPattern pattern) {
+                    public void convertDispatch(ABPattern<ButtonColorPattern> pattern) {
                         // send conversion log
                         if (pattern.isMatchPattern(ButtonColorPattern.RED)) {
                             // sendLog("conversion red")
-                        } else if (pattern.equals(ButtonColorPattern.GREEN)) {
+                        } else if (pattern.isMatchPattern(ButtonColorPattern.GREEN)) {
                             // sendLog("conversion green")
                         }
                     }
