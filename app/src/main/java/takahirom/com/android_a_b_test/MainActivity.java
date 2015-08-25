@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String RED = "red";
-    public static final String GREEN = "green";
+    enum ButtonColorPattern {
+        RED, GREEN,
+    }
+
     public static final String BUTTON_COLOR = "button color";
 
     @Override
@@ -20,20 +22,20 @@ public class MainActivity extends AppCompatActivity {
 
         final Button button = (Button) findViewById(R.id.button);
 
-        final ABTest abTest = new ABTest.Builder(this)
+        final ABTest<ButtonColorPattern> abTest = new ABTest.Builder<ButtonColorPattern>(this)
                 .withName(BUTTON_COLOR)
-                .addPattern(new ABPattern(RED, 70))
-                .addPattern(new ABPattern(GREEN, 30))
+                .addPattern(new ABPattern<>(ButtonColorPattern.RED, 70))
+                .addPattern(new ABPattern<>(ButtonColorPattern.GREEN, 30))
                 .build();
 
-        abTest.visit(new OnVisitListener() {
+        abTest.visit(new VisitDispatcher<ButtonColorPattern>() {
             @Override
-            public void onVisit(ABPattern pattern) {
+            public void dispatch(ABPattern<ButtonColorPattern> pattern) {
                 // visit
-                if (RED.equals(pattern.getName())) {
+                if (pattern.isMatchPattern(ButtonColorPattern.RED)) {
                     button.setBackgroundColor(Color.RED);
                     // sendLog("visit red")
-                } else if (GREEN.equals(pattern.getName())) {
+                } else if (pattern.equals(ButtonColorPattern.GREEN)) {
                     button.setBackgroundColor(Color.GREEN);
                     // sendLog("visit green")
                 }
@@ -50,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onConvert(ABPattern pattern) {
                         // send conversion log
-                        if (RED.equals(pattern.getName())) {
+                        if (pattern.isMatchPattern(ButtonColorPattern.RED)) {
                             // sendLog("conversion red")
-                        } else if (GREEN.equals(pattern.getName())) {
+                        } else if (pattern.equals(ButtonColorPattern.GREEN)) {
                             // sendLog("conversion green")
                         }
                     }

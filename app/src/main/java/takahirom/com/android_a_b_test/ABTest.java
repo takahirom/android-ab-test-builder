@@ -1,14 +1,13 @@
 package takahirom.com.android_a_b_test;
 
 import android.content.Context;
-import android.view.View;
 
 /**
  * Created by takahirom on 15/08/19.
  */
 // TODO: Implementation
-public class ABTest {
-    private OnVisitListener OnVisitListener;
+public class ABTest<T> {
+    private VisitDispatcher<T> VisitDispatcher;
 
     private ABTest(){
     }
@@ -17,11 +16,11 @@ public class ABTest {
 
     }
 
-    public void setOnVisitListener(OnVisitListener onVisitListener) {
-        this.OnVisitListener = onVisitListener;
+    public void setVisitDispatcher(VisitDispatcher visitDispatcher) {
+        this.VisitDispatcher = visitDispatcher;
     }
 
-    public void visit(OnVisitListener onVisitListener) {
+    public void visit(VisitDispatcher<T> visitDispatcher) {
     }
 
     public void convert(OnConvertionListener onConvertionListener) {
@@ -31,22 +30,22 @@ public class ABTest {
         return null;
     }
 
-    public static class Builder {
-        public Builder(Context context) {
+    public static class Builder<T> {
+        public <T>Builder(Context context) {
 
         }
 
-        public Builder withName(String s) {
+        public Builder<T> withName(String s) {
             return null;
         }
 
-        public Builder addPattern(ABPattern abPattern) {
+        public Builder<T> addPattern(ABPattern<T> abPattern) {
             return null;
         }
 
-        public ABTest build() {
+        public ABTest<T> build() {
             // TODO: distribute pattern
-            return new ABTest();
+            return new ABTest<>();
         }
     }
 }
