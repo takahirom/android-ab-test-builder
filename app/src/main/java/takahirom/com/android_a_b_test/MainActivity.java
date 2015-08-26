@@ -10,7 +10,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     enum ButtonColorPattern {
-        RED, GREEN,
+        RED, GREEN, YELLOW
     }
 
     @Override
@@ -22,20 +22,28 @@ public class MainActivity extends AppCompatActivity {
 
         final ABTest<ButtonColorPattern> buttonColorABTest = new ABTest.Builder<ButtonColorPattern>(this)
                 .withClass(ButtonColorPattern.class)
-                .addPattern(new ABPattern<>(ButtonColorPattern.RED, 1))
-                .addPattern(new ABPattern<>(ButtonColorPattern.GREEN, 1))
+                .addPattern(new ABPattern<>(ButtonColorPattern.RED, 80))
+                .addPattern(new ABPattern<>(ButtonColorPattern.GREEN, 10))
+                .addPattern(new ABPattern<>(ButtonColorPattern.YELLOW, 10))
                 .buildIfFirstTime();
 
         buttonColorABTest.visit(new VisitDispatcher<ButtonColorPattern>() {
             @Override
             public void dispatch(ABPattern<ButtonColorPattern> pattern) {
                 // visit
-                if (pattern.isMatchPattern(ButtonColorPattern.RED)) {
-                    button.setBackgroundColor(Color.RED);
-                    // sendLog("visit red")
-                } else if (pattern.isMatchPattern(ButtonColorPattern.GREEN)) {
-                    button.setBackgroundColor(Color.GREEN);
-                    // sendLog("visit green")
+                switch (pattern.patternEnumValue) {
+                    case RED:
+                        button.setBackgroundColor(Color.RED);
+                        // sendLog("visit red")
+                        break;
+                    case GREEN:
+                        button.setBackgroundColor(Color.GREEN);
+                        // sendLog("visit green")
+                        break;
+                    case YELLOW:
+                        button.setBackgroundColor(Color.YELLOW);
+                        // sendLog("visit yellow")
+                        break;
                 }
                 Toast.makeText(MainActivity.this, "show:" + pattern.getName(), Toast.LENGTH_SHORT).show();
 
@@ -55,10 +63,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void dispatch(ABPattern<ButtonColorPattern> pattern) {
                         // send conversion log
-                        if (pattern.isMatchPattern(ButtonColorPattern.RED)) {
-                            // sendLog("conversion red")
-                        } else if (pattern.isMatchPattern(ButtonColorPattern.GREEN)) {
-                            // sendLog("conversion green")
+                        switch (pattern.patternEnumValue) {
+                            case RED:
+                                // sendLog("conversion red")
+                                break;
+                            case GREEN:
+                                // sendLog("conversion green")
+                                break;
+                            case YELLOW:
+                                // sendLog("conversion yellow")
+                                break;
                         }
                         Toast.makeText(MainActivity.this, "click:" + pattern.getName(), Toast.LENGTH_SHORT).show();
                     }

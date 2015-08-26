@@ -5,7 +5,7 @@ package takahirom.com.android_a_b_test;
  */
 public class ABPattern<T extends Enum<T>> {
 
-    private final T patternEnumValue;
+    public final T patternEnumValue;
     public final int weight;
 
     public ABPattern(T patternEnumValue, int weight) {
