@@ -1,4 +1,4 @@
-package takahirom.com.android_a_b_test;
+package com.takahirom.android_abtest_builder;
 
 /**
  * Created by takahirom on 15/08/19.

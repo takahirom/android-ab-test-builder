@@ -1,4 +1,4 @@
-package takahirom.com.android_a_b_test;
+package com.takahirom.android_ab_test_sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -6,6 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.takahirom.android_abtest_builder.ABPattern;
+import com.takahirom.android_abtest_builder.ABTest;
+import com.takahirom.android_abtest_builder.ConvertDispatcher;
+import com.takahirom.android_abtest_builder.VisitDispatcher;
 
 public class MainActivity extends AppCompatActivity {
 

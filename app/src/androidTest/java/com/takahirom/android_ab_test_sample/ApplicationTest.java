@@ -1,4 +1,4 @@
-package takahirom.com.android_a_b_test;
+package com.takahirom.android_ab_test_sample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
