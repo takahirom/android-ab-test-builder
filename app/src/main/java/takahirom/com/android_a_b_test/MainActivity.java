@@ -13,8 +13,6 @@ public class MainActivity extends AppCompatActivity {
         RED, GREEN,
     }
 
-    public static final String BUTTON_COLOR = "button color";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,13 +20,13 @@ public class MainActivity extends AppCompatActivity {
 
         final Button button = (Button) findViewById(R.id.button);
 
-        final ABTest<ButtonColorPattern> abTest = new ABTest.Builder<ButtonColorPattern>(this)
-                .withName(BUTTON_COLOR)
-                .addPattern(new ABPattern<>(ButtonColorPattern.RED, 70))
-                .addPattern(new ABPattern<>(ButtonColorPattern.GREEN, 30))
-                .build();
+        final ABTest<ButtonColorPattern> buttonColorABTest = new ABTest.Builder<ButtonColorPattern>(this)
+                .withClass(ButtonColorPattern.class)
+                .addPattern(new ABPattern<>(ButtonColorPattern.RED, 1))
+                .addPattern(new ABPattern<>(ButtonColorPattern.GREEN, 1))
+                .buildIfFirstTime();
 
-        abTest.visit(new VisitDispatcher<ButtonColorPattern>() {
+        buttonColorABTest.visit(new VisitDispatcher<ButtonColorPattern>() {
             @Override
             public void dispatch(ABPattern<ButtonColorPattern> pattern) {
                 // visit
@@ -39,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
                     button.setBackgroundColor(Color.GREEN);
                     // sendLog("visit green")
                 }
+                Toast.makeText(MainActivity.this, "show:" + pattern.getName(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -46,17 +45,22 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "clicked!", Toast.LENGTH_SHORT).show();
-                // If ABTest already built,ABTest instance can created by name.
-                ABTest.<ButtonColorPattern>getBuiltInstance(MainActivity.this, BUTTON_COLOR).convert(new ConvertDispatcher<ButtonColorPattern>() {
+                // If ABTest already built,ABTest instance can created by patternEnumValue.
+                ABTest<ButtonColorPattern> builtInstance = ABTest.getBuiltInstance(MainActivity.this, ButtonColorPattern.class);
+                if (builtInstance == null) {
+                    // If not already built returns null;
+                    return;
+                }
+                builtInstance.convert(new ConvertDispatcher<ButtonColorPattern>() {
                     @Override
-                    public void convertDispatch(ABPattern<ButtonColorPattern> pattern) {
+                    public void dispatch(ABPattern<ButtonColorPattern> pattern) {
                         // send conversion log
                         if (pattern.isMatchPattern(ButtonColorPattern.RED)) {
                             // sendLog("conversion red")
                         } else if (pattern.isMatchPattern(ButtonColorPattern.GREEN)) {
                             // sendLog("conversion green")
                         }
+                        Toast.makeText(MainActivity.this, "click:" + pattern.getName(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
