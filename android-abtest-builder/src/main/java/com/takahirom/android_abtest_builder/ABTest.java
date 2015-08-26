@@ -36,8 +36,11 @@ public class ABTest<T extends Enum<T>> {
      * @return ABTest instance. If ABTest doesn't built yet, returns null
      */
     public static <T extends Enum<T>> ABTest<T> getBuiltInstance(Context context, Class<T> clazz) {
-        SharedPreferences sharedPreferences = getABTestPreferences(context);
-        String savedPatternName = sharedPreferences.getString(clazz.getName(), null);
+        return getBuiltInstance(new ABTestPreferences(context), clazz);
+    }
+
+    protected static <T extends Enum<T>> ABTest<T> getBuiltInstance(ABTestPreferences abTestPreferences, Class<T> clazz) {
+        String savedPatternName = abTestPreferences.getPattern(clazz.getName());
         EnumSet<T> enumSet = EnumSet.allOf(clazz);
         for (T patternEnumValue : enumSet) {
             if (patternEnumValue.name().equalsIgnoreCase(savedPatternName)) {
@@ -48,17 +51,16 @@ public class ABTest<T extends Enum<T>> {
         return null;
     }
 
-    private static SharedPreferences getABTestPreferences(Context context) {
-        return context.getSharedPreferences("ab_test_patterns", Context.MODE_PRIVATE);
-    }
-
     public static class Builder<T extends Enum<T>> {
 
         private final Context context;
+        // Visible for testing
+        protected ABTestPreferences abTestPreferences;
         private List<ABPattern<T>> patterns = new ArrayList<>();
         private Class<T> clazz;
 
         public Builder(Context context) {
+            abTestPreferences = new ABTestPreferences(context);
             this.context = context;
         }
 
@@ -82,7 +84,7 @@ public class ABTest<T extends Enum<T>> {
 
         public ABTest<T> build() {
             ABPattern<T> resultPattern = chooseRandomABPattern();
-            getABTestPreferences(context).edit().putString(clazz.getName(), resultPattern.getName()).apply();
+            abTestPreferences.putPattern(clazz.getName(), resultPattern.getName());
             return new ABTest<>(resultPattern);
         }
 
