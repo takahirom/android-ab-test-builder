@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "clicked!", Toast.LENGTH_SHORT).show();
                 // If ABTest already built,ABTest instance can created by name.
-                ABTest.getBuiltInstance(MainActivity.this, BUTTON_COLOR).convert(new ConvertDispatcher<ButtonColorPattern>() {
+                ABTest.<ButtonColorPattern>getBuiltInstance(MainActivity.this, BUTTON_COLOR).convert(new ConvertDispatcher<ButtonColorPattern>() {
                     @Override
                     public void convertDispatch(ABPattern<ButtonColorPattern> pattern) {
                         // send conversion log
