@@ -9,7 +9,7 @@ Comming soon.
 Prepare enum.
 
 ```java
-enum ButtonColorPattern {
+enum ButtonColorPatterns {
     RED, GREEN, YELLOW
 }
 ```
@@ -17,20 +17,20 @@ enum ButtonColorPattern {
 ### Build ABTest instance
 
 ```java
-final ABTest<ButtonColorPattern> buttonColorABTest = new ABTest.Builder<ButtonColorPattern>(this)
-    .withClass(ButtonColorPattern.class)
-    .addPattern(new ABPattern<>(ButtonColorPattern.RED, 80))
-    .addPattern(new ABPattern<>(ButtonColorPattern.GREEN, 10))
-    .addPattern(new ABPattern<>(ButtonColorPattern.YELLOW, 10))
+final ABTest<ButtonColorPatterns> buttonColorABTest = new ABTest.Builder<ButtonColorPatterns>(this)
+    .withClass(ButtonColorPatterns.class)
+    .addPattern(new ABPattern<>(ButtonColorPatterns.RED, 80))
+    .addPattern(new ABPattern<>(ButtonColorPatterns.GREEN, 10))
+    .addPattern(new ABPattern<>(ButtonColorPatterns.YELLOW, 10))
     .buildIfFirstTime();
 ```
 
 ### Send visit log
 
 ```java
-buttonColorABTest.visit(new VisitDispatcher<ButtonColorPattern>() {
+buttonColorABTest.visit(new VisitDispatcher<ButtonColorPatterns>() {
     @Override
-    public void dispatch(ABPattern<ButtonColorPattern> pattern) {
+    public void dispatch(ABPattern<ButtonColorPatterns> pattern) {
         // visit
         switch (pattern.patternEnumValue) {
             case RED:
@@ -58,15 +58,15 @@ buttonColorABTest.visit(new VisitDispatcher<ButtonColorPattern>() {
 button.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        // If ABTest already built,ABTest instance can created by patternEnumValue.
-        ABTest<ButtonColorPattern> builtInstance = ABTest.getBuiltInstance(MainActivity.this, ButtonColorPattern.class);
+        // If ABTest already built,ABTest instance can created by enum class.
+        ABTest<ButtonColorPatterns> builtInstance = ABTest.getBuiltInstance(MainActivity.this, ButtonColorPatterns.class);
         if (builtInstance == null) {
             // If not already built returns null;
             return;
         }
-        builtInstance.convert(new ConvertDispatcher<ButtonColorPattern>() {
+        builtInstance.convert(new ConvertDispatcher<ButtonColorPatterns>() {
             @Override
-            public void dispatch(ABPattern<ButtonColorPattern> pattern) {
+            public void dispatch(ABPattern<ButtonColorPatterns> pattern) {
                 // send conversion log
                 switch (pattern.patternEnumValue) {
                     case RED:
