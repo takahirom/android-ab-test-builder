@@ -1,7 +1,6 @@
 package com.takahirom.android_abtest_builder;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
