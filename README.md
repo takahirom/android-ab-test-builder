@@ -17,6 +17,7 @@ enum ButtonColorPatterns {
 ### Build ABTest instance
 
 ```java
+// Show button RED : GREEN : YELLOW = 80 : 10 : 10
 final ABTest<ButtonColorPatterns> buttonColorABTest = new ABTest.Builder<ButtonColorPatterns>(this)
     .withClass(ButtonColorPatterns.class)
     .addPattern(new ABPattern<>(ButtonColorPatterns.RED, 80))
