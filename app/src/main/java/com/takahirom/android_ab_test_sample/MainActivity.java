@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         final Button button = (Button) findViewById(R.id.button);
 
         final ABTest<ButtonColorPatterns> buttonColorABTest = new ABTest.Builder<ButtonColorPatterns>(this)
-                .withClass(ButtonColorPatterns.class)
+                .with("ButtonColorPatterns", ButtonColorPatterns.class)
                 .addPattern(new ABPattern<>(ButtonColorPatterns.RED, 80))
                 .addPattern(new ABPattern<>(ButtonColorPatterns.GREEN, 10))
                 .addPattern(new ABPattern<>(ButtonColorPatterns.YELLOW, 10))

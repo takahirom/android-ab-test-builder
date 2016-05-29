@@ -57,13 +57,15 @@ public class ABTest<T extends Enum<T>> {
         protected ABTestPreferences abTestPreferences;
         private List<ABPattern<T>> patterns = new ArrayList<>();
         private Class<T> clazz;
+        private String name;
 
         public Builder(Context context) {
             abTestPreferences = new ABTestPreferences(context);
             this.context = context;
         }
 
-        public Builder<T> withClass(Class<T> clazz) {
+        public Builder<T> with(String name, Class<T> clazz) {
+            this.name = name;
             this.clazz = clazz;
             return this;
         }
