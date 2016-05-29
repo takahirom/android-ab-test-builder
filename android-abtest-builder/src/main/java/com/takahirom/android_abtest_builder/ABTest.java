@@ -34,12 +34,12 @@ public class ABTest<T extends Enum<T>> {
      * @param <T> T is Pattern Enum type
      * @return ABTest instance. If ABTest doesn't built yet, returns null
      */
-    public static <T extends Enum<T>> ABTest<T> getBuiltInstance(Context context, Class<T> clazz) {
-        return getBuiltInstance(new ABTestPreferences(context), clazz);
+    public static <T extends Enum<T>> ABTest<T> getBuiltInstance(Context context, String name, Class<T> clazz) {
+        return getBuiltInstance(new ABTestPreferences(context), name, clazz);
     }
 
-    protected static <T extends Enum<T>> ABTest<T> getBuiltInstance(ABTestPreferences abTestPreferences, Class<T> clazz) {
-        String savedPatternName = abTestPreferences.getPattern(clazz.getName());
+    protected static <T extends Enum<T>> ABTest<T> getBuiltInstance(ABTestPreferences abTestPreferences, String name, Class<T> clazz) {
+        String savedPatternName = abTestPreferences.getPattern(name);
         EnumSet<T> enumSet = EnumSet.allOf(clazz);
         for (T patternEnumValue : enumSet) {
             if (patternEnumValue.name().equalsIgnoreCase(savedPatternName)) {
@@ -85,7 +85,7 @@ public class ABTest<T extends Enum<T>> {
 
         public ABTest<T> build() {
             ABPattern<T> resultPattern = chooseRandomABPattern();
-            abTestPreferences.putPattern(clazz.getName(), resultPattern.getName());
+            abTestPreferences.putPattern(name, resultPattern.getName());
             return new ABTest<>(resultPattern);
         }
 

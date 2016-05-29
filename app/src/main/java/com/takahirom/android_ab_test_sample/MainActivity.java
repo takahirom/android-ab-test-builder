@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // If ABTest already built,ABTest instance can created by patternEnumValue.
-                ABTest<ButtonColorPatterns> builtInstance = ABTest.getBuiltInstance(MainActivity.this, ButtonColorPatterns.class);
+                ABTest<ButtonColorPatterns> builtInstance = ABTest.getBuiltInstance(MainActivity.this, "ButtonColorPatterns", ButtonColorPatterns.class);
                 if (builtInstance == null) {
                     // If not already built returns null;
                     return;
