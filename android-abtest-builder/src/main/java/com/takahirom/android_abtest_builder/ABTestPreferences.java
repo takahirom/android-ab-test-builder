@@ -13,7 +13,7 @@ public class ABTestPreferences {
     private final SharedPreferences sharedPreferences;
 
     public ABTestPreferences(Context context){
-        sharedPreferences = context.getSharedPreferences("sharedPreferences", Modifier.PRIVATE);
+        sharedPreferences = context.getSharedPreferences("ab_test_preference", Modifier.PRIVATE);
     }
 
     public void putPattern (String patternsName, String patternName) {
