@@ -1,7 +1,10 @@
 package com.takahirom.android_abtest_builder;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -34,24 +37,24 @@ public class ABTest<T extends Enum<T>> {
      * @param <T> T is Pattern Enum type
      * @return ABTest instance. If ABTest doesn't built yet, returns null
      */
+    @Nullable
     public static <T extends Enum<T>> ABTest<T> getBuiltInstance(Context context, String name, Class<T> clazz) {
         return getBuiltInstance(new ABTestPreferences(context), name, clazz);
     }
 
+    @Nullable
     protected static <T extends Enum<T>> ABTest<T> getBuiltInstance(ABTestPreferences abTestPreferences, String name, Class<T> clazz) {
-        String savedPatternName = abTestPreferences.getPattern(name);
-        EnumSet<T> enumSet = EnumSet.allOf(clazz);
-        for (T patternEnumValue : enumSet) {
-            if (patternEnumValue.name().equalsIgnoreCase(savedPatternName)) {
-                ABPattern<T> abPattern = new ABPattern<>(patternEnumValue);
-                return new ABTest<>(abPattern);
-            }
+        int index = abTestPreferences.getPattern(name);
+        if (index == -1) {
+            // Now, not exist pattern
+            return null;
         }
-        return null;
+        EnumSet<T> enumSet = EnumSet.allOf(clazz);
+        ABPattern<T> abPattern = new ABPattern<>((T) enumSet.toArray()[index]);
+        return new ABTest<>(abPattern);
     }
 
     public static class Builder<T extends Enum<T>> {
-
         private final Context context;
         // Visible for testing
         protected ABTestPreferences abTestPreferences;
@@ -83,9 +86,10 @@ public class ABTest<T extends Enum<T>> {
             return build();
         }
 
+        @NonNull
         public ABTest<T> build() {
             ABPattern<T> resultPattern = chooseRandomABPattern();
-            abTestPreferences.putPattern(name, resultPattern.getName());
+            abTestPreferences.putPattern(name, resultPattern.patternEnumValue.ordinal());
             return new ABTest<>(resultPattern);
         }
 

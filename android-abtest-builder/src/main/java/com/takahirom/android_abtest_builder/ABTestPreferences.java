@@ -16,11 +16,11 @@ public class ABTestPreferences {
         sharedPreferences = context.getSharedPreferences("ab_test_preference", Modifier.PRIVATE);
     }
 
-    public void putPattern (String patternsName, String patternName) {
-        sharedPreferences.edit().putString(patternsName, patternName).apply();
+    public void putPattern (String patternsName, int patternName) {
+        sharedPreferences.edit().putInt(patternsName, patternName).apply();
     }
 
-    public String getPattern (String patternsName) {
-        return sharedPreferences.getString(patternsName, null);
+    public int getPattern (String patternsName) {
+        return sharedPreferences.getInt(patternsName, -1);
     }
 }
