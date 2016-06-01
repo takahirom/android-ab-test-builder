@@ -76,7 +76,7 @@ public class ABTest<T extends Enum<T>> {
         }
 
         public ABTest<T> buildIfFirstTime() {
-            ABTest<T> builtInstance = ABTest.getBuiltInstance(context, clazz);
+            ABTest<T> builtInstance = ABTest.getBuiltInstance(context, name ,clazz);
             if (builtInstance != null) {
                 return builtInstance;
             }
