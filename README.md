@@ -19,11 +19,11 @@ enum ButtonColorPatterns {
 ```java
 // Show button RED : GREEN : YELLOW = 80 : 10 : 10
 final ABTest<ButtonColorPatterns> buttonColorABTest = new ABTest.Builder<ButtonColorPatterns>(this)
-    .withClass(ButtonColorPatterns.class)
-    .addPattern(new ABPattern<>(ButtonColorPatterns.RED, 80))
-    .addPattern(new ABPattern<>(ButtonColorPatterns.GREEN, 10))
-    .addPattern(new ABPattern<>(ButtonColorPatterns.YELLOW, 10))
-    .buildIfFirstTime();
+        .with("ButtonColorPatterns", ButtonColorPatterns.class)
+        .addPattern(new ABPattern<>(ButtonColorPatterns.RED, 80))
+        .addPattern(new ABPattern<>(ButtonColorPatterns.GREEN, 10))
+        .addPattern(new ABPattern<>(ButtonColorPatterns.YELLOW, 10))
+        .buildIfFirstTime();
 ```
 
 ### Send visit log
@@ -59,8 +59,8 @@ buttonColorABTest.visit(new VisitDispatcher<ButtonColorPatterns>() {
 button.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        // If ABTest already built,ABTest instance can created by enum class.
-        ABTest<ButtonColorPatterns> builtInstance = ABTest.getBuiltInstance(MainActivity.this, ButtonColorPatterns.class);
+        // If ABTest already built,ABTest instance can created by patternEnumValue.
+        ABTest<ButtonColorPatterns> builtInstance = ABTest.getBuiltInstance(MainActivity.this, "ButtonColorPatterns", ButtonColorPatterns.class);
         if (builtInstance == null) {
             // If not already built returns null;
             return;
