@@ -87,6 +87,84 @@ button.setOnClickListener(new View.OnClickListener() {
 });
 ```
 
+
+## More efficient way by enum field
+
+### Prepare enum with color and name for logging.
+
+```java
+enum ButtonColorPatterns {
+    RED("red", Color.RED), GREEN("green", Color.GREEN), YELLOW("yellow", Color.YELLOW);
+
+    // name for logging
+    private final String patternName;
+    // button color
+    private final int color;
+
+    ButtonColorPatterns(String patternName, @ColorInt int color) {
+        this.patternName = patternName;
+        this.color = color;
+    }
+}
+```
+
+### Build ABTest instance
+
+```java
+final ABTest<ButtonColorPatterns> buttonColorABTest = new ABTest.Builder<ButtonColorPatterns>(this)
+        .with("ButtonColorPatterns", ButtonColorPatterns.class)
+        .addPattern(new ABPattern<>(ButtonColorPatterns.RED, 60))
+        .addPattern(new ABPattern<>(ButtonColorPatterns.GREEN, 20))
+        .addPattern(new ABPattern<>(ButtonColorPatterns.YELLOW, 20))
+        .buildIfFirstTime();
+```
+
+### Send visit log
+
+You can remove switch case statement by enum.
+
+```java
+buttonColorABTest.visit(new VisitDispatcher<ButtonColorPatterns>() {
+    @Override
+    public void dispatch(ABPattern<ButtonColorPatterns> pattern) {
+        // visit
+        button.setBackgroundColor(pattern.patternEnumValue.color);
+        // You can send visit log with pattern.patternEnumValue.patternName
+        // sendVisitLog(pattern.patternEnumValue.patternName);
+
+        Toast.makeText(EnumFieldMainActivity.this, "show:" + pattern.getName(), Toast.LENGTH_SHORT).show();
+
+    }
+});
+```
+
+### Send click log
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        // If ABTest already built,ABTest instance can created by patternEnumValue.
+        ABTest<ButtonColorPatterns> builtInstance = ABTest.getBuiltInstance(EnumFieldMainActivity.this, "ButtonColorPatterns", ButtonColorPatterns.class);
+        if (builtInstance == null) {
+            // If not already built returns null;
+            return;
+        }
+        builtInstance.convert(new ConvertDispatcher<ButtonColorPatterns>() {
+            @Override
+            public void dispatch(ABPattern<ButtonColorPatterns> pattern) {
+                // You can send conversion log with pattern.patternEnumValue.patternName
+                // sendConversionLog(pattern.patternEnumValue.patternName);
+
+                Toast.makeText(EnumFieldMainActivity.this, "click:" + pattern.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+});
+```
+
+
+
 ## License
 
 This project is released under the Apache License, Version 2.0.
